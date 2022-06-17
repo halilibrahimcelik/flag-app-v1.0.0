@@ -4,6 +4,26 @@
 // https://restcountries.com/
 
 const countryDiv = document.querySelector(".countries");
+const form = document.querySelector("select");
+
+const listOfCountryName = async () => {
+  let url = "https://restcountries.com/v3.1/all";
+  const response = await fetch(url);
+  data = await response.json();
+  const options = document.createElement("option");
+
+  data.forEach((country, index) => {
+    const {
+      name: { common },
+    } = country;
+    options.setAttribute("value", index + 1);
+    options.innerText = common;
+    form.append(options);
+
+    console.log(common, index + 1);
+  });
+};
+listOfCountryName();
 
 async function fetchCountry(name) {
   const url = `https://restcountries.com/v3.1/name/${name}`;
@@ -43,13 +63,12 @@ function renderCountry(country) {
     languages,
     currencies,
   } = country;
-  //   console.log(capital, common, region, svg);
-  //   console.log(Object.values(languages));
-  //   console.log(Object.values(currencies)[0].name);
-  //   console.log(Object.values(currencies)[0].symbol);
 
-  countryDiv.innerHTML += `
-<div class="card shadow"  style="width: 18rem;">
+  const cardDiv = document.createElement("div");
+  cardDiv.className = "card shadow";
+  cardDiv.style = "width: 18rem;";
+
+  carDivInnerHTML = `
   <img src="${svg}" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">${common}</h5>
@@ -68,8 +87,7 @@ function renderCountry(country) {
     ${Object.values(currencies)[0].name}
     </li>
   </ul>
- 
-</div>
-
 `;
+  cardDiv.innerHTML = carDivInnerHTML;
+  countryDiv.prepend(cardDiv);
 }
