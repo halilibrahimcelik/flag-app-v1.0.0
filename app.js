@@ -21,22 +21,24 @@ const listOfCountryName = async () => {
   let url = "https://restcountries.com/v3.1/all";
   const response = await fetch(url);
   data = await response.json();
+  let arr = [];
 
-  data.forEach((country, index) => {
+  data.forEach((country) => {
     const {
       name: { common },
     } = country;
+    arr.push(common);
+    arr.sort();
+  });
+  arr.forEach((countryName, index) => {
     const options = document.createElement("option");
     options.setAttribute("value", index + 1);
-    options.setAttribute("data-name", common);
-    options.innerHTML = common;
+    options.setAttribute("data-name", countryName);
+    options.innerText = countryName;
     form.append(options);
-    // console.log(options);
-    // console.log(common, index + 1);
   });
 };
 listOfCountryName();
-console.log(form.value);
 
 async function fetchCountry(text) {
   const url = `https://restcountries.com/v3.1/name/${text}`;
@@ -54,11 +56,6 @@ async function fetchCountry(text) {
     console.log(error);
   }
 }
-
-// fetchCountry("turkey");
-// fetchCountry("usa");
-// fetchCountry("belgium");
-// fetchCountry("south africa");
 
 function renderError(text) {
   countryDiv.innerHTML = `
