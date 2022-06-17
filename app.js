@@ -6,27 +6,40 @@
 const countryDiv = document.querySelector(".countries");
 const form = document.querySelector("select");
 
+form.addEventListener("change", () => {
+  const index = document.querySelector(".form-select").selectedIndex;
+  let OptionText = document.getElementsByTagName("option")[index].innerText;
+  console.log(index);
+  if (index === 0) {
+    countryDiv.innerHTML = ``;
+  } else {
+    fetchCountry(OptionText);
+  }
+});
+
 const listOfCountryName = async () => {
   let url = "https://restcountries.com/v3.1/all";
   const response = await fetch(url);
   data = await response.json();
-  const options = document.createElement("option");
 
   data.forEach((country, index) => {
     const {
       name: { common },
     } = country;
+    const options = document.createElement("option");
     options.setAttribute("value", index + 1);
-    options.innerText = common;
+    options.setAttribute("data-name", common);
+    options.innerHTML = common;
     form.append(options);
-
-    console.log(common, index + 1);
+    // console.log(options);
+    // console.log(common, index + 1);
   });
 };
 listOfCountryName();
+console.log(form.value);
 
-async function fetchCountry(name) {
-  const url = `https://restcountries.com/v3.1/name/${name}`;
+async function fetchCountry(text) {
+  const url = `https://restcountries.com/v3.1/name/${text}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -41,10 +54,11 @@ async function fetchCountry(name) {
     console.log(error);
   }
 }
-fetchCountry("turkey");
-fetchCountry("usa");
-fetchCountry("belgium");
-fetchCountry("south africa");
+
+// fetchCountry("turkey");
+// fetchCountry("usa");
+// fetchCountry("belgium");
+// fetchCountry("south africa");
 
 function renderError(text) {
   countryDiv.innerHTML = `
