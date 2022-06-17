@@ -76,7 +76,7 @@ function renderCountry(country) {
   } = country;
 
   const cardDiv = document.createElement("div");
-  cardDiv.className = "card shadow";
+  cardDiv.className = "card card-body shadow";
   cardDiv.style = "width: 18rem;";
 
   carDivInnerHTML = `
